@@ -1,0 +1,52 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS JavaScript Tutorials: Create a Starter App</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  
+    <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.15/"></script>
+  <script src="ArcGIS_Map_App"></script>  
+    
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
+
+tags$head(tags$meta(charset="utf-8"),
+            tags$meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no"),
+            tags$link(rel = "stylesheet", href="https://js.arcgis.com/4.15/esri/themes/light/main.css"),
+            tags$link(rel = "stylesheet", href="styles.css"),
+            tags$script(src = "https://js.arcgis.com/4.15/esri/Map"),
+            tags$script(src = "https://js.arcgis.com/4.15/esri/views/MapView"),
+            tags$script(src = "https://js.arcgis.com/4.15/esri/widgets/Search"),
+            tags$script(src = "ESRIMAP.js"),
+            tags$script(src = "showPopup.js")),
+  
+  titlePanel("Denken Tephra fall DB for volcanic tephra fall hazard in Japan"),
+  
+  sidebarPanel(
+    textInput('lat', 'Lat'), 
+    textInput('long', 'Long')
+  ),
+  
+  mainPanel(
+            tags$script(src = "https://js.arcgis.com/4.15/esri/Map"),
+            tags$script(src = "https://js.arcgis.com/4.15/esri/views/MapView"),
+            tags$script(src = "https://js.arcgis.com/4.15/esri/widgets/Search"),
+            tags$script(src = "ESRIMAP.js"),
+            tags$script(src = "showPopup.js"),
+            tags$div(style="padding: 0;
+                     margin: 0;
+                     height: 100%;
+                     width: 100%;"),
+            )
