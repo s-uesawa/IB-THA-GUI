@@ -8,6 +8,9 @@ Original script and source data is available at https://github.com/s-uesawa/Prot
 The coordinate ranges handled in this database are as follows:
 125E/150E/25N/47N (JGD2000)
 
+When you use this application, please download raster and related data from https://doi.org/10.5281/zenodo.5109160, and put the data into "data" folder.
+Do not delete "README.txt" . This data is also used in the GUI application.
+
 R is a free software environment for statistical computiong and graphics (Visit at https://www.r-project.org/ for more detail ).
 
 Author: Shimpei Uesawa (contact: uesawa<at>criepi.denken.or.jp) <at> -> @
