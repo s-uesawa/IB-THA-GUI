@@ -10,7 +10,7 @@ shinyServer(function(input, output, session) {
   showModal(modalDialog(title="LOADING TEPHRA DB - PLEASE WAIT...","Please wait for a map to draw before proceeding.",size="l",footer=NULL))
   
   output$tephraDB <- renderTable({
-    read.csv("data/No_and_age_list_fin.csv",header=TRUE, sep=",", check.names=F)
+    read.csv("data/No_and_age_list_fin2.csv",header=TRUE, sep=",", check.names=F)
   })
   
   output$readMe <- renderTable({
