@@ -2,7 +2,8 @@
 
 Update: <26/July/2022>
 
-This GUI program was created for evaluating tephra fall hazards based on database of Isopach maps (prototype version) by Shimpei Uesawa using R-Shiny with R-studio.
+This GUI program was created for evaluating tephra fall hazards based on database of Isopach maps (prototype version) by Shimpei Uesawa using R-Shiny with R-studio. https://s-uesawa.shinyapps.io/IB-THA-GUI/
+
 Original script and source data is available at https://github.com/s-uesawa/Prototype-TephraDB-Japan and https://doi.org/10.5281/zenodo.3608345.
 A detailed explanation is available at Uesawa et al. (2022) https://doi.org/10.1186/s13617-022-00126-x.
 
