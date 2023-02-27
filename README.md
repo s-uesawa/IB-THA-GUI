@@ -6,7 +6,7 @@ This GUI program was created for assessing tephra fall hazards based on database
 
 ![image](https://user-images.githubusercontent.com/59720812/213601634-d004a0a7-a331-4a08-aa4e-a5a48436bfc5.png)
 
-Original script and source data and a detailed explanation are available at https://github.com/s-uesawa/Prototype-TephraDB-Japan, https://doi.org/10.5281/zenodo.3608345 and Uesawa et al. (2022) https://doi.org/10.1186/s13617-022-00126-x, respectively.
+Original script, source data and a detailed explanation are available at https://github.com/s-uesawa/Prototype-TephraDB-Japan, https://doi.org/10.5281/zenodo.3608345 and Uesawa et al. (2022) https://doi.org/10.1186/s13617-022-00126-x, respectively.
 
 The coordinate ranges handled in this database are as follows:
 125E/150E/25N/47N (JGD2000)
