@@ -44,7 +44,7 @@ shinyUI(
       h4(" STEP3. The calculated result."),
            tabsetPanel(
            tabPanel("Plot", plotOutput("plot1")),
-           tabPanel("Table 1: Raw data of the hazard curve",
+           tabPanel("Table 1: Data of the hazard curve",
                     tags$br(),
                     downloadButton("downloadData1","Download the result"),
                     tableOutput("haz")),
