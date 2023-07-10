@@ -26,7 +26,7 @@ shinyUI(
             
   fluidRow(
     box(
-      title=("Creating a hazard curve"), width = 10,
+      title=("Creating a hazard curve for tephra fall"), width = 10,
       h4(" STEP1. Find coordinates at a locality clicking on the map"),
       leafletOutput("mymap"),
       h5(" *Some tephra fall distribution maps can be seen, switching on and off at a layer controller. The minimum limit of the displaying thickness is 10 mm."),
@@ -38,15 +38,20 @@ shinyUI(
        textInput("lat1", "Latitude(lat)", ""),
        textInput("long1", "Longitude(lng)", ""),
        actionButton("goAction", "Create a hazard curve!"),
+       h5(" Please wait for a few minutes to obtain a hazard curve."),
       
       tags$hr(),
       h4(" STEP3. The calculated result."),
            tabsetPanel(
            tabPanel("Plot", plotOutput("plot1")),
-           tabPanel("Table",
+           tabPanel("Table 1: Raw data of the hazard curve",
                     tags$br(),
                     downloadButton("downloadData1","Download the result"),
-                    tableOutput("haz")
+                    tableOutput("haz")),
+           tabPanel("Table 2: The tephra fall history",
+                    tags$br(),
+                    downloadButton("downloadData2","Download the result"),
+                    tableOutput("hist")
            )
            )
       )

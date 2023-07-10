@@ -173,7 +173,7 @@ shinyServer(function(input, output, session) {
       xy <- cbind(long3, lat3)
       df2 <- read.csv('data/No_and_age_list_fin.csv')
       dflabel <- read.table('data/label.csv',header = FALSE)
-      TiffName <- df2$Tephra_Name..Tiff_file_name.
+      TiffName <- df2$Tephra_Name
       leng <- length(TiffName)
       n <- 1:leng
       No <- dflabel 
@@ -203,28 +203,32 @@ shinyServer(function(input, output, session) {
       df2 <- read.csv('data/No_and_age_list_fin.csv')
       df3 <- na.fill(df1,0)
       df4 <- as.numeric(df3[1,])
-      df5 <- df2$Year_ka
-      df6 <- data.frame(Year_ka=df5,Ashfall=df4)
+      df5 <- df2$Age_ka
+      df6 <- data.frame(Age_ka=df5,Ashfall=df4)
+      df7 <- df2$Volcano
+      df8 <- df2$Tephra_Name
+      df9 <- data.frame(Volcano=df7, Tephra_Name=df8, Age_ka=df5, Tephra_fall_mm=df4)
+      write.csv(df9,"data/Tephra_fall_history.csv", row.names=FALSE, quote=FALSE)
       
       ### Here, we analyze the tephra fall record during the 150 ka! ### 
       ### If the database will be extended to older events, the treat should be change.####
       
-      df_bool1 <- df6[df6$Year_ka >=0 & df6$Year_ka <10,]
-      df_bool2 <- df6[df6$Year_ka >=10 & df6$Year_ka <20,]
-      df_bool3 <- df6[df6$Year_ka >=20 & df6$Year_ka <30,]
-      df_bool4 <- df6[df6$Year_ka >=30 & df6$Year_ka<40,]
-      df_bool5 <- df6[df6$Year_ka >=40 & df6$Year_ka<50,]
-      df_bool6 <- df6[df6$Year_ka >=50 & df6$Year_ka<60,]
-      df_bool7 <- df6[df6$Year_ka >=60 & df6$Year_ka<70,]
-      df_bool8 <- df6[df6$Year_ka >=70 & df6$Year_ka <80,]
-      df_bool9 <- df6[df6$Year_ka >=80 & df6$Year_ka <90,]
-      df_bool10 <- df6[df6$Year_ka >=90 & df6$Year_ka <100,]
-      df_bool11 <- df6[df6$Year_ka >=100 & df6$Year_ka<110,]
-      df_bool12 <- df6[df6$Year_ka >=110 & df6$Year_ka <120,]
-      df_bool13 <- df6[df6$Year_ka >=120 & df6$Year_ka <130,]
-      df_bool14 <- df6[df6$Year_ka >=130 & df6$Year_ka <140,]
-      df_bool15 <- df6[df6$Year_ka >=140 & df6$Year_ka<150,]
-      df_boolTot <- df6[df6$Year_ka<150,]
+      df_bool1 <- df6[df6$Age_ka >=0 & df6$Age_ka <10,]
+      df_bool2 <- df6[df6$Age_ka >=10 & df6$Age_ka <20,]
+      df_bool3 <- df6[df6$Age_ka >=20 & df6$Age_ka <30,]
+      df_bool4 <- df6[df6$Age_ka >=30 & df6$Age_ka<40,]
+      df_bool5 <- df6[df6$Age_ka >=40 & df6$Age_ka<50,]
+      df_bool6 <- df6[df6$Age_ka >=50 & df6$Age_ka<60,]
+      df_bool7 <- df6[df6$Age_ka >=60 & df6$Age_ka<70,]
+      df_bool8 <- df6[df6$Age_ka >=70 & df6$Age_ka <80,]
+      df_bool9 <- df6[df6$Age_ka >=80 & df6$Age_ka <90,]
+      df_bool10 <- df6[df6$Age_ka >=90 & df6$Age_ka <100,]
+      df_bool11 <- df6[df6$Age_ka >=100 & df6$Age_ka<110,]
+      df_bool12 <- df6[df6$Age_ka >=110 & df6$Age_ka <120,]
+      df_bool13 <- df6[df6$Age_ka >=120 & df6$Age_ka <130,]
+      df_bool14 <- df6[df6$Age_ka >=130 & df6$Age_ka <140,]
+      df_bool15 <- df6[df6$Age_ka >=140 & df6$Age_ka<150,]
+      df_boolTot <- df6[df6$Age_ka<150,]
       
       W3 <- linspace(10, 3000, 300)
       W2 <- c(0.01, 0.1, 1)
@@ -470,24 +474,34 @@ shinyServer(function(input, output, session) {
       
       rezhaz <- cbind(Tephra_fall_thickness_mm = W,AFE_mean = mean_values[,2],Conf_95_max=Conf_95_max[,2],Conf_95_min=Conf_95_min[,2])
       write.csv(rezhaz,"data/hazard_result.csv", row.names=FALSE, quote=FALSE)
-      
-      output$haz <- renderTable(
-        read.csv("data/hazard_result.csv"), digits=-2)
-      
+
       layout(matrix(1:2, ncol=2)) 
       plot(Cum_freq_150, type="l", log='x', xlab="Tephra fall thickness (mm)", ylab="Number of events", ylim=c(0,30)) #,xaxt="n",yaxt="n")
       plot(mean_values, type="l", log='xy', xlab="Tephra fall thickness (mm)", ylab="Mean annual frequency of exceedance", main= "hazard curve", ylim=c(10^-6,10^-3)) #,xaxt="n",yaxt="n")
       points(Conf_95_max, type="l", col="red")
       points(Conf_95_min, type="l", col="red")
       
-      output$downloadData1 <- downloadHandler(
-        filename = "hazard_result.csv", content = function(file){
-          PATH2 <- "data/hazard_result.csv"
-          data <- read.table(PATH2, sep=",", header=TRUE, check.names=F)
-          write.csv(data,file)}
-      )
       })
-      
+    
+    output$haz <- renderTable(
+      read.csv("data/hazard_result.csv"), digits=-2)
+    
+    output$hist <- renderTable(
+      read.csv("data/Tephra_fall_history.csv"), digits=-2)
+    
+    output$downloadData1 <- downloadHandler(
+      filename = "hazard_result.csv", content = function(file){
+        PATH2 <- "data/hazard_result.csv"
+        data <- read.table(PATH2, sep=",", header=TRUE, check.names=F)
+        write.csv(data,file)}
+    )
+    
+    output$downloadData2 <- downloadHandler(
+      filename = "Tephra_fall_history.csv", content = function(file){
+        PATH2 <- "data/Tephra_fall_history.csv"
+        data <- read.table(PATH2, sep=",", header=TRUE, check.names=F)
+        write.csv(data,file)}
+    )
     })
   })
 })
