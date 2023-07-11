@@ -47,10 +47,12 @@ shinyUI(
            tabPanel("Table 1: Data of the hazard curve",
                     tags$br(),
                     downloadButton("downloadData1","Download the result"),
+                    actionButton("goAction2", "View the table"),
                     tableOutput("haz")),
            tabPanel("Table 2: The tephra fall history",
                     tags$br(),
                     downloadButton("downloadData2","Download the result"),
+                    actionButton("goAction3", "View the table"),
                     tableOutput("hist")
            )
            )

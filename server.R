@@ -483,11 +483,11 @@ shinyServer(function(input, output, session) {
       
       })
     
-    output$haz <- renderTable(
-      read.csv("data/hazard_result.csv"), digits=-2)
+    observeEvent(input$goAction2, {output$haz <- renderTable(
+      read.csv("data/hazard_result.csv"), digits=-2)})
     
-    output$hist <- renderTable(
-      read.csv("data/Tephra_fall_history.csv"), digits=-2)
+    observeEvent(input$goAction3, { output$hist <- renderTable(
+      read.csv("data/Tephra_fall_history.csv"), digits=-2)})
     
     output$downloadData1 <- downloadHandler(
       filename = "hazard_result.csv", content = function(file){
@@ -498,8 +498,8 @@ shinyServer(function(input, output, session) {
     
     output$downloadData2 <- downloadHandler(
       filename = "Tephra_fall_history.csv", content = function(file){
-        PATH2 <- "data/Tephra_fall_history.csv"
-        data <- read.table(PATH2, sep=",", header=TRUE, check.names=F)
+        PATH3 <- "data/Tephra_fall_history.csv"
+        data <- read.table(PATH3, sep=",", header=TRUE, check.names=F)
         write.csv(data,file)}
     )
     })
