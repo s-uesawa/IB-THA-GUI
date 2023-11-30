@@ -1,10 +1,13 @@
 library(shiny)
 library(leaflet)
 library(leaflet.extras)
+library(leafem)
 library(magrittr)
-library(rgdal)
 library(sp)
+library(sf)
 library(raster)
+library(stars)
+library(tidyverse) 
 
 shinyServer(function(input, output, session) {
   showModal(modalDialog(title="LOADING TEPHRA DB - PLEASE WAIT...","Please wait for a map to draw before proceeding.",size="l",footer=NULL))
@@ -17,18 +20,24 @@ shinyServer(function(input, output, session) {
     read.table("data/README.txt", header=TRUE ,sep="\n", check.names=F, quote = "", )
   })
   
-
-  r73 <- rgdal::readGDAL("data/F_Ho.tif")
-  r90 <- rgdal::readGDAL("data/B_Tm.tif")
-  r232 <- rgdal::readGDAL("data/Ik.tif")
+  output$torisetsu <- downloadHandler(
+    filename = "【電力中央研究所】降下火山灰ハザード評価ツール_取扱説明書1.pdf",
+    content = function(file){
+      file.copy("data/torisetsu.pdf", file)
+    }
+  )
+  
+  r73 <- stars::read_stars("data/F_Ho.tif")
+  r90 <- stars::read_stars("data/B_Tm.tif")
+  r232 <- stars::read_stars("data/Ik.tif")
   #r233 <- rgdal::readGDAL("data/K_Ah_SUM.tif")
   #r266 <- rgdal::readGDAL("data/Aso_3.tif")
   #r267 <- rgdal::readGDAL("data/Aso_4.tif")
   #r269 <- rgdal::readGDAL("data/Aso2T.tif")
   #r274 <- rgdal::readGDAL("data/AT_SUM.tif")
   #r276 <- rgdal::readGDAL("data/Ata.tif")
-  r299 <- rgdal::readGDAL("data/DKP.tif")
-  r333 <- rgdal::readGDAL("data/Hk_TP.tif")
+  r299 <- stars::read_stars("data/DKP.tif")
+  r333 <- stars::read_stars("data/Hk_TP.tif")
   #r369 <- rgdal::readGDAL("data/K_Tz.tif")
   #r373 <- rgdal::readGDAL("data/Kc_Hb.tif")
   #r415 <- rgdal::readGDAL("data/Ng.tif")
@@ -36,69 +45,21 @@ shinyServer(function(input, output, session) {
   #r459 <- rgdal::readGDAL("data/SK.tif")
   #r461 <- rgdal::readGDAL("data/Spfa_1.tif")
   #r473 <- rgdal::readGDAL("data/To_BP1.tif")
-  r488 <- rgdal::readGDAL("data/Toya.tif")
-  r489 <- rgdal::readGDAL("data/Tp_HP.tif")
+  r488 <- stars::read_stars("data/Toya.tif")
+  r489 <- stars::read_stars("data/Tp_HP.tif")
   #r492 <- rgdal::readGDAL("data/U_Oki.tif")
   
-  ### Change raster data to raster Class for R ####
-  r73w <- raster(r73)
-  r90w <- raster(r90)
-  r232w <- raster(r232)
-  #r233w <- raster(r233)
-  #r266w <- raster(r266)
-  #r267w <- raster(r267)
-  #r269w <- raster(r269)
-  #r274w <- raster(r274)
-  #r276w <- raster(r276)
-  r299w <- raster(r299)
-  r333w <- raster(r333)
-  #r369w <- raster(r369)
-  #r373w <- raster(r373)
-  #r415w <- raster(r415)
-  #r438w <- raster(r438)
-  #r459w <- raster(r459)
-  #r461w <- raster(r461)
-  #r473w <- raster(r473)
-  r488w <- raster(r488)
-  r489w <- raster(r489)
-  #r492w <- raster(r492)
-  
-  crs(r73w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r90w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r232w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r233w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r266w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r267w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r269w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r274w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r276w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r299w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r333w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r369w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r373w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r415w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r438w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r459w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r461w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r473w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r488w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  crs(r489w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  #crs(r492w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
- 
-  
-  volcanoes <- rgdal::readOGR("data/Volcanoes.shp")
-  crs(volcanoes) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-  volc1 <- data.frame(volcanoes@coords)
-  long4 <- volc1$coords.x1
-  lat4 <- volc1$coords.x2
+  volcanoes <- read.csv('data/Volcanoes.csv')
+  long4 <- volcanoes$POINT_X
+  lat4 <- volcanoes$POINT_Y
   volname <- volcanoes$NAME
   volc2 <-data.frame(long=long4, lat=lat4)
   
   VolcIcon <- makeIcon("data/Volc_icon_t.png", 24, 24)
   
-    pal <- colorNumeric(c("blue", "yellow", "red"), c(10, 5000),
-                        na.color = "transparent")
-    
+  pal1 <- colorNumeric(c("blue","yellow","red"), domain = c(0,5000), na.color = "transparent") #
+  pal2 <- leafem:::colorOptions(c("blue","yellow","red"), na.color = "transparent", domain = c(0,5000))# 
+  
   output$mymap <- renderLeaflet({
     leaflet(volc2) %>%
       setView(139.69172,35.68948,zoom = 7) %>%
@@ -107,26 +68,26 @@ shinyServer(function(input, output, session) {
       addMeasure(primaryLengthUnit = "meters", primaryAreaUnit = "sqmeters") %>%
       addMarkers(~long, ~lat, popup=volname, group="Volcanoes") %>%
       #addRasterImage(r373w, colors = pal, opacity = 0.3, group="Kutcharo IV") %>%
-      addRasterImage(r90w, colors = pal, opacity = 0.3, group="Paektu-Tomakomai(B-Tm)") %>%
+      addGeoRaster(r90, colorOptions = pal2, opacity = 0.3, group="Paektu-Tomakomai(B-Tm)", autozoom = FALSE) %>%
       #addRasterImage(r461w, colors = pal, opacity = 0.3, group="Shikotsu-Caldera(Spfa-1)") %>%
-      addRasterImage(r488w, colors = pal, opacity = 0.3, group="Toya") %>%
+      addGeoRaster(r488, colorOptions = pal2, opacity = 0.3, group="Toya", autozoom = FALSE) %>%
       #addRasterImage(r415w, colors = pal, opacity = 0.3, group="Nigorikawa") %>%
-      addRasterImage(r489w, colors = pal, opacity = 0.3, group="Towada-Hachinohe") %>%
+      addGeoRaster(r489, colorOptions = pal2, opacity = 0.3, group="Towada-Hachinohe", autozoom = FALSE) %>%
       #addRasterImage(r473w, colors = pal, opacity = 0.3, group="Towada-Ohfudo") %>%
       #addRasterImage(r492w, colors = pal, opacity = 0.3, group="Ulleungdo-Oki") %>%
       #addRasterImage(r438w, colors = pal, opacity = 0.3, group="Ontake-Pm1") %>%
-      addRasterImage(r73w, colors = pal, opacity = 0.3, group="Fuji_Hoei") %>%
-      addRasterImage(r333w, colors = pal, opacity = 0.3, group="Hakone-Tokyo") %>%
-      addRasterImage(r299w, colors = pal, opacity = 0.3, group="Daisen-Kurayoshi") %>%
+      addGeoRaster(r73, colorOptions = pal2, opacity = 0.3, group="Fuji_Hoei", autozoom = FALSE) %>%
+      addGeoRaster(r333, colorOptions = pal2, opacity = 0.3, group="Hakone-Tokyo", autozoom = FALSE) %>%
+      addGeoRaster(r299, colorOptions = pal2, opacity = 0.3, group="Daisen-Kurayoshi", autozoom = FALSE) %>%
       #addRasterImage(r459w, colors = pal, opacity = 0.3, group="Sambe-Kitsugi") %>%
       #addRasterImage(r267w, colors = pal, opacity = 0.3, group="Aso-4") %>%
       #addRasterImage(r266w, colors = pal, opacity = 0.3, group="Aso-3") %>%
       #addRasterImage(r274w, colors = pal, opacity = 0.3, group="Aira-Tanzawa") %>%
       #addRasterImage(r276w, colors = pal, opacity = 0.3, group="Ata") %>%
-      addRasterImage(r232w, colors = pal, opacity = 0.3, group="Ikeda-Caldera") %>%
+      addGeoRaster(r232, colorOptions = pal2, opacity = 0.3, group="Ikeda-Caldera", autozoom = FALSE) %>%
       #addRasterImage(r233w, colors = pal, opacity = 0.3, group="Kikai-Akahoya") %>%
       #addRasterImage(r369w, colors = pal, opacity = 0.3, group="Kikai-Tozurahara") %>%
-      addLegend(pal = pal, values = c(10, 5000),
+      addLegend(pal = pal1, values = c(0, 5000),
                 title = "Tephra fall thickness (mm)", position="bottomleft", group ="Legend") %>%
       addLayersControl(
         overlayGroups = c("Volcanoes","Legend", "Paektu-Tomakomai(B-Tm)", "Toya", "Towada-Hachinohe", "Fuji_Hoei", "Hakone-Tokyo", "Daisen-Kurayoshi", "Ikeda-Caldera")) %>%  #, "Aso-4", "Kikai-Akahoya")) %>% #"Kutcharo IV","Paektu-Tomakomai(B-Tm)","Shikotsu-Caldera(Spfa-1)","Toya","Nigorikawa","Towada-Hachinohe","Towada-Ohfudo","Ulleungdo-Oki","Ontake-Pm1","Fuji_Hoei","Hakone-Tokyo","Daisen-Kurayoshi","Sambe-Kitsugi","Aso-4","Aso-3","Aira-Tanzawa","Ata","Ikeda-Caldera","Kikai-Akahoya","Kikai-Tozurahara")) %>%
@@ -152,7 +113,8 @@ shinyServer(function(input, output, session) {
         
       })
   
-  output$loc <- renderTable({input$mymap_click
+  output$loc <- renderTable(
+    {data.frame(Latitude=input$mymap_click$lat, Longitude=input$mymap_click$lng)
     })
   
   observe({
@@ -162,15 +124,13 @@ shinyServer(function(input, output, session) {
     observeEvent(input$goAction, {
     output$plot1 <- renderPlot({
       
-      
-      
       lat2 <- isolate(input$lat1)
       long2 <- isolate(input$long1)
       
       lat3 <- as.numeric(lat2)
       long3 <- as.numeric(long2)
       
-      xy <- cbind(long3, lat3)
+      xy <- st_point(cbind(long3, lat3))
       df2 <- read.csv('data/No_and_age_list_fin.csv')
       dflabel <- read.table('data/label.csv',header = FALSE)
       TiffName <- df2$Tephra_Name
@@ -181,12 +141,13 @@ shinyServer(function(input, output, session) {
       No2 <- data.frame()
 
       for (i in n){
-        Tiffname <- paste0("data/", TiffName[i])
-        r1 <- rgdal::readGDAL(Tiffname)
-        r1w <- raster(r1)
-        crs(r1w) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
-        No3 <- extract(r1w, xy, method='simple', buffer=NULL)
-        exvals <- rbind(exvals,No3)
+        Tiffname1 <- paste0("data/", TiffName[i])
+        r1 <- stars::read_stars(Tiffname1)
+        xy |> st_sfc(crs = st_crs(r1)) -> pol1
+        No3 <- st_extract(r1, pol1)
+        value1 <- eval(parse(text= paste0("No3$", TiffName[i])))
+        value2 <- ifelse(value1 < 0, 0, value1)
+        exvals <- rbind(exvals,value2)
         No2 <- rbind(No2,No[i,1])
         }
 
