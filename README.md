@@ -1,6 +1,6 @@
 # IB-THA-GUI
 
-Update: <10/July/2023>
+Update: <30/Nov/2023>
 
 This GUI program was created for assessing tephra fall hazards based on the database of Isopach maps (prototype version) by Shimpei Uesawa using R-Shiny with R-studio. https://s-uesawa.shinyapps.io/IB-THA-GUI/
 
@@ -12,9 +12,8 @@ The coordinate ranges handled in this database are as follows:
 125E/150E/25N/47N (JGD2000)
 
 When you use this application, please download the raster and related data from https://zenodo.org/record/7857457, and put the data into the "data" folder.
-Do not delete "README.txt.". This data is also used in the GUI application.
 
-R is a free software environment for statistical computation and graphics (Visit https://www.r-project.org/ for more detail ).
+R is a free software environment for statistical computation and graphics (Visit https://www.r-project.org/ for more details).
 
 Author: Shimpei Uesawa (contact: uesawa<at>criepi.denken.or.jp) <at> -> @
 Affiliation: Central Research Institute of Electric Power Industry, Nuclear Risk Research Center, Abiko, Chiba, Japan
