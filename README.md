@@ -11,7 +11,7 @@ The original script, source data, and a detailed explanation are available at ht
 The coordinate ranges handled in this database are as follows:
 125E/150E/25N/47N (JGD2000)
 
-When you use this application, please download the raster and related data from [https://zenodo.org/record/7857457](https://doi.org/10.5281/zenodo.10846798), and put the data into the "data" folder.
+When you use this application, please download the raster and related data from https://doi.org/10.5281/zenodo.10846798, and put the data into the "data" folder.
 
 R is a free software environment for statistical computation and graphics (Visit https://www.r-project.org/ for more details).
 
