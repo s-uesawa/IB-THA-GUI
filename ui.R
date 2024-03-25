@@ -4,6 +4,7 @@ library(leaflet)
 library(magrittr)
 library(raster)
 library(sp)
+library(DT)
 
 shinyUI(
   dashboardPage(skin="blue",
@@ -55,7 +56,7 @@ shinyUI(
                     tags$br(),
                     downloadButton("downloadData2","Download the result"),
                     actionButton("goAction3", "View the table"),
-                    tableOutput("hist")
+                    DT::dataTableOutput("hist")
            )
            ),
       tags$footer(
@@ -72,7 +73,7 @@ shinyUI(
             ),
           
           tabPanel("Tephra DB", 
-                   tableOutput("tephraDB"))
+                   DT::dataTableOutput("tephraDB"))
           ),
   
   tabItem(tabName = "readme",
@@ -80,13 +81,13 @@ shinyUI(
                   tags$html(
                     tags$body(
                       title="README", 
-                      tags$br("Update: <30/Nov/2023>　version: v1.3.1"),
+                      tags$br("Update: <25/Mar./2024>　version: v1.4.1"),
                       tags$br(),
                       tags$html("We created this GUI program for assessing tephra fall hazards based on a database of Isopach maps (prototype version) by Shimpei Uesawa using R-Shiny with R-studio.
                                 The original script and source data are available at"),
                       tags$a("https://github.com/s-uesawa/Prototype-TephraDB-Japan", href="https://github.com/s-uesawa/Prototype-TephraDB-Japan"),
                       tags$html("and"),
-                      tags$a("https://doi.org/10.5281/zenodo.7857457", href="https://doi.org/10.5281/zenodo.7857457"), tags$br(), 
+                      tags$a("Uesawa, S. (2024). TephraDB_Prototype_ver1.4 (ver.1.4) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10846798", href="https://doi.org/10.5281/zenodo.10846798"), tags$br(), 
                       tags$html("See Uesawa et al. (2022)"), tags$a("https://doi.org/10.1186/s13617-022-00126-x", href="https://doi.org/10.1186/s13617-022-00126-x"), tags$html("for a detailed explanation."), tags$br(),
                       tags$br("Present and previous versions of this application source codes are available at"), tags$a("https://github.com/s-uesawa/IB-THA-GUI", href="https://github.com/s-uesawa/IB-THA-GUI"),tags$br(),
                       tags$br("The coordinate ranges handled in this database are as follows:"),
