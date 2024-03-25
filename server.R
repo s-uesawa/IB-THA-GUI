@@ -8,11 +8,12 @@ library(sf)
 library(raster)
 library(stars)
 library(tidyverse) 
+library(DT)
 
 shinyServer(function(input, output, session) {
   showModal(modalDialog(title="LOADING TEPHRA DB - PLEASE WAIT...","Please wait for a map to draw before proceeding.",size="l",footer=NULL))
   
-  output$tephraDB <- renderTable({
+  output$tephraDB <- renderDataTable({
     read.csv("data/No_and_age_list_fin2.csv",header=TRUE, sep=",", check.names=F)
   })
   
@@ -447,8 +448,8 @@ shinyServer(function(input, output, session) {
     observeEvent(input$goAction2, {output$haz <- renderTable(
       read.csv("data/hazard_result.csv"), digits=-2)})
     
-    observeEvent(input$goAction3, { output$hist <- renderTable(
-      read.csv("data/Tephra_fall_history.csv"), digits=-2)})
+    observeEvent(input$goAction3, { output$hist <- renderDataTable(
+      read.csv("data/Tephra_fall_history.csv"))})
     
     output$downloadData1 <- downloadHandler(
       filename = "hazard_result.csv", content = function(file){
